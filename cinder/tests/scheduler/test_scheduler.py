@@ -238,13 +238,13 @@ class SchedulerDriverModuleTestCase(test.TestCase):
 
         self.mox.StubOutWithMock(utils, 'utcnow')
         self.mox.StubOutWithMock(db, 'volume_update')
-        self.mox.StubOutWithMock(db, 'queue_get_for')
+        self.mox.StubOutWithMock(rpc, 'queue_get_for')
         self.mox.StubOutWithMock(rpc, 'cast')
 
         utils.utcnow().AndReturn('fake-now')
         db.volume_update(self.context, 31337,
                 {'host': host, 'scheduled_at': 'fake-now'})
-        db.queue_get_for(self.context,
+        rpc.queue_get_for(self.context,
                          FLAGS.volume_topic, host).AndReturn(queue)
         rpc.cast(self.context, queue,
                 {'method': method,
@@ -260,10 +260,10 @@ class SchedulerDriverModuleTestCase(test.TestCase):
         fake_kwargs = {'extra_arg': 'meow'}
         queue = 'fake_queue'
 
-        self.mox.StubOutWithMock(db, 'queue_get_for')
+        self.mox.StubOutWithMock(rpc, 'queue_get_for')
         self.mox.StubOutWithMock(rpc, 'cast')
 
-        db.queue_get_for(self.context,
+        rpc.queue_get_for(self.context,
                          FLAGS.volume_topic, host).AndReturn(queue)
         rpc.cast(self.context, queue,
                 {'method': method,
@@ -279,10 +279,10 @@ class SchedulerDriverModuleTestCase(test.TestCase):
         fake_kwargs = {'extra_arg': 'meow'}
         queue = 'fake_queue'
 
-        self.mox.StubOutWithMock(db, 'queue_get_for')
+        self.mox.StubOutWithMock(rpc, 'queue_get_for')
         self.mox.StubOutWithMock(rpc, 'cast')
 
-        db.queue_get_for(self.context,
+        rpc.queue_get_for(self.context,
                          FLAGS.volume_topic, host).AndReturn(queue)
         rpc.cast(self.context, queue,
                 {'method': method,
@@ -312,10 +312,10 @@ class SchedulerDriverModuleTestCase(test.TestCase):
         topic = 'unknown'
         queue = 'fake_queue'
 
-        self.mox.StubOutWithMock(db, 'queue_get_for')
+        self.mox.StubOutWithMock(rpc, 'queue_get_for')
         self.mox.StubOutWithMock(rpc, 'cast')
 
-        db.queue_get_for(self.context, topic, host).AndReturn(queue)
+        rpc.queue_get_for(self.context, topic, host).AndReturn(queue)
         rpc.cast(self.context, queue,
                 {'method': method,
                  'args': fake_kwargs})
