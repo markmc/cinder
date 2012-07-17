@@ -24,7 +24,7 @@ import mox
 
 from cinder import context
 from cinder import flags
-from cinder import log as logging
+from cinder.openstack.common import log as logging
 from cinder.rpc import amqp as rpc_amqp
 from cinder import test
 

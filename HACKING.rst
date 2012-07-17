@@ -58,7 +58,6 @@ Human Alphabetical Order Examples
 Example::
 
   import httplib
-  import logging
   import random
   import StringIO
   import time
@@ -71,6 +70,7 @@ Example::
   from cinder.api import openstack
   from cinder.auth import users
   from cinder.endpoint import cloud
+  from cinder.openstack.common import log as logging
   import cinder.flags
   from cinder import test
 

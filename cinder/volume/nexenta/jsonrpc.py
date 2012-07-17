@@ -26,7 +26,7 @@ import json
 import urllib2
 
 from cinder.volume import nexenta
-from cinder import log as logging
+from cinder.openstack.common import log as logging
 
 LOG = logging.getLogger("cinder.volume.nexenta.jsonrpc")
 

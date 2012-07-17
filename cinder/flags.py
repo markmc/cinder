@@ -73,18 +73,6 @@ def _get_my_ip():
         return "127.0.0.1"
 
 
-log_opts = [
-    cfg.StrOpt('logdir',
-               default=None,
-               help='Log output to a per-service log file in named directory'),
-    cfg.StrOpt('logfile',
-               default=None,
-               help='Log output to a named file'),
-    cfg.BoolOpt('use_stderr',
-                default=True,
-                help='Log output to standard error'),
-    ]
-
 core_opts = [
     cfg.StrOpt('connection_type',
                default=None,
@@ -119,7 +107,6 @@ debug_opts = [
                 help='If passed, use a fake RabbitMQ provider'),
 ]
 
-FLAGS.register_cli_opts(log_opts)
 FLAGS.register_cli_opts(core_opts)
 FLAGS.register_cli_opts(debug_opts)
 
@@ -246,9 +233,6 @@ global_opts = [
     cfg.IntOpt('auth_token_ttl',
                default=3600,
                help='Seconds for auth tokens to linger'),
-    cfg.StrOpt('logfile_mode',
-               default='0644',
-               help='Default file mode used when creating log files'),
     cfg.StrOpt('sqlite_db',
                default='cinder.sqlite',
                help='the filename to use with sqlite'),

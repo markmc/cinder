@@ -1,6 +1,4 @@
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
-
-# Copyright 2011 Justin Santa Barbara
+# Copyright 2011 OpenStack LLC.
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -16,16 +14,9 @@
 #    under the License.
 
 
-from cinder.openstack.common import log as logging
-from cinder.tests.integrated import integrated_helpers
+NOTIFICATIONS = []
 
 
-LOG = logging.getLogger(__name__)
-
-
-class LoginTest(integrated_helpers._IntegratedTestBase):
-    def test_login(self):
-        """Simple check - we list volumes - so we know we're logged in."""
-        volumes = self.api.get_volumes()
-        for volume in volumes:
-            LOG.debug(_("volume: %s") % volume)
+def notify(_context, message):
+    """Test notifier, stores notifications in memory for unittests."""
+    NOTIFICATIONS.append(message)

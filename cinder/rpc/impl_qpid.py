@@ -25,7 +25,7 @@ import greenlet
 import qpid.messaging
 import qpid.messaging.exceptions
 
-from cinder import log as logging
+from cinder.openstack.common import log as logging
 from cinder.openstack.common import cfg
 from cinder.rpc import amqp as rpc_amqp
 from cinder.rpc import common as rpc_common

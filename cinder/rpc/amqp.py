@@ -35,7 +35,7 @@ from eventlet import semaphore
 
 from cinder import context
 from cinder import exception
-from cinder import log as logging
+from cinder.openstack.common import log as logging
 from cinder.openstack.common import local
 import cinder.rpc.common as rpc_common
 from cinder import utils

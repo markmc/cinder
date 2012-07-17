@@ -1,6 +1,6 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-# Copyright 2011 Justin Santa Barbara
+# Copyright 2012 Red Hat, Inc.
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -15,25 +15,19 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-"""Contrib contains extensions that are shipped with cinder.
+"""
+gettext for openstack-common modules.
 
-It can't be called 'extensions' because that causes namespacing problems.
+Usual usage in an openstack.common module:
 
+    from openstack.common.gettextutils import _
 """
 
-from cinder import flags
-from cinder.openstack.common import log as logging
-from cinder.api.openstack import extensions
+import gettext
 
 
-FLAGS = flags.FLAGS
-LOG = logging.getLogger(__name__)
+t = gettext.translation('openstack-common', 'locale', fallback=True)
 
 
-def standard_extensions(ext_mgr):
-    extensions.load_standard_extensions(ext_mgr, LOG, __path__, __package__)
-
-
-def select_extensions(ext_mgr):
-    extensions.load_standard_extensions(ext_mgr, LOG, __path__, __package__,
-                                        FLAGS.osapi_volume_ext_list)
+def _(msg):
+    return t.ugettext(msg)

@@ -1,6 +1,4 @@
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
-
-# Copyright 2011 Justin Santa Barbara
+# Copyright 2011 OpenStack LLC.
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -15,25 +13,23 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-"""Contrib contains extensions that are shipped with cinder.
 
-It can't be called 'extensions' because that causes namespacing problems.
-
-"""
-
-from cinder import flags
+from cinder.openstack.common import cfg
+from cinder.openstack.common import jsonutils
 from cinder.openstack.common import log as logging
-from cinder.api.openstack import extensions
 
 
-FLAGS = flags.FLAGS
-LOG = logging.getLogger(__name__)
+CONF = cfg.CONF
 
 
-def standard_extensions(ext_mgr):
-    extensions.load_standard_extensions(ext_mgr, LOG, __path__, __package__)
+def notify(_context, message):
+    """Notifies the recipient of the desired event given the model.
+    Log notifications using openstack's default logging system"""
 
-
-def select_extensions(ext_mgr):
-    extensions.load_standard_extensions(ext_mgr, LOG, __path__, __package__,
-                                        FLAGS.osapi_volume_ext_list)
+    priority = message.get('priority',
+                           CONF.default_notification_level)
+    priority = priority.lower()
+    logger = logging.getLogger(
+        'cinder.openstack.common.notification.%s' %
+        message['event_type'])
+    getattr(logger, priority)(jsonutils.dumps(message))

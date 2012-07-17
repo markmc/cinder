@@ -55,7 +55,7 @@ This module provides Manager, a base class for managers.
 
 from cinder.db import base
 from cinder import flags
-from cinder import log as logging
+from cinder.openstack.common import log as logging
 from cinder.scheduler import api
 from cinder import version
 

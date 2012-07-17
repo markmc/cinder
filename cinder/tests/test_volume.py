@@ -28,7 +28,7 @@ from cinder import context
 from cinder import exception
 from cinder import db
 from cinder import flags
-from cinder import log as logging
+from cinder.openstack.common import log as logging
 from cinder.openstack.common import importutils
 import cinder.policy
 from cinder import rpc
