@@ -215,18 +215,6 @@ class XMLDeserializer(TextDeserializer):
         return {'body': self._from_xml(datastring)}
 
 
-class MetadataXMLDeserializer(XMLDeserializer):
-
-    def extract_metadata(self, metadata_node):
-        """Marshal the metadata attribute of a parsed request"""
-        metadata = {}
-        if metadata_node is not None:
-            for meta_node in self.find_children_named(metadata_node, "meta"):
-                key = meta_node.getAttribute("key")
-                metadata[key] = self.extract_text(meta_node)
-        return metadata
-
-
 class DictSerializer(ActionDispatcher):
     """Default request body serialization"""
 
@@ -1068,53 +1056,6 @@ class Fault(webob.exc.HTTPException):
 
     def __str__(self):
         return self.wrapped_exc.__str__()
-
-
-class OverLimitFault(webob.exc.HTTPException):
-    """
-    Rate-limited request response.
-    """
-
-    def __init__(self, message, details, retry_time):
-        """
-        Initialize new `OverLimitFault` with relevant information.
-        """
-        hdrs = OverLimitFault._retry_after(retry_time)
-        self.wrapped_exc = webob.exc.HTTPRequestEntityTooLarge(headers=hdrs)
-        self.content = {
-            "overLimitFault": {
-                "code": self.wrapped_exc.status_int,
-                "message": message,
-                "details": details,
-            },
-        }
-
-    @staticmethod
-    def _retry_after(retry_time):
-        delay = int(math.ceil(retry_time - time.time()))
-        retry_after = delay if delay > 0 else 0
-        headers = {'Retry-After': '%d' % retry_after}
-        return headers
-
-    @webob.dec.wsgify(RequestClass=Request)
-    def __call__(self, request):
-        """
-        Return the wrapped exception with a serialized body conforming to our
-        error format.
-        """
-        content_type = request.best_match_content_type()
-        metadata = {"attributes": {"overLimitFault": "code"}}
-
-        xml_serializer = XMLDictSerializer(metadata, XMLNS_V1)
-        serializer = {
-            'application/xml': xml_serializer,
-            'application/json': JSONDictSerializer(),
-        }[content_type]
-
-        content = serializer.serialize(self.content)
-        self.wrapped_exc.body = content
-
-        return self.wrapped_exc
 
 
 def _set_request_id_header(req, headers):
